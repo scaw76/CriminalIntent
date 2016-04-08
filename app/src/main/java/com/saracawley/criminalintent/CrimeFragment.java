@@ -44,6 +44,13 @@ public class CrimeFragment extends Fragment {
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -78,9 +85,13 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // set the crimes solved property
+                CrimeLab crimeLab = CrimeLab.get(getActivity());
                 mCrime.setSolved(isChecked);
+                crimeLab.updateCrime(mCrime);
+
             }
         });
         return v;
     }
+
 }
